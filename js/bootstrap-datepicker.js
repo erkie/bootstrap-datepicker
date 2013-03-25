@@ -538,27 +538,27 @@
 			switch (this.viewMode) {
 				case 0:
 					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() && month <= this.startDate.getUTCMonth()) {
-						this.picker.find('.prev').css({visibility: 'hidden'});
+						this.picker.find('.prev').addClass("out-of-range");
 					} else {
-						this.picker.find('.prev').css({visibility: 'visible'});
+						this.picker.find('.prev').removeClass("out-of-range");
 					}
 					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() && month >= this.endDate.getUTCMonth()) {
-						this.picker.find('.next').css({visibility: 'hidden'});
+						this.picker.find('.next').addClass("out-of-range");
 					} else {
-						this.picker.find('.next').css({visibility: 'visible'});
+						this.picker.find('.next').removeClass("out-of-range");
 					}
 					break;
 				case 1:
 				case 2:
 					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()) {
-						this.picker.find('.prev').css({visibility: 'hidden'});
+						this.picker.find('.prev').addClass("out-of-range");
 					} else {
-						this.picker.find('.prev').css({visibility: 'visible'});
+						this.picker.find('.prev').removeClass("out-of-range");
 					}
 					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()) {
-						this.picker.find('.next').css({visibility: 'hidden'});
+						this.picker.find('.next').addClass("out-of-range");
 					} else {
-						this.picker.find('.next').css({visibility: 'visible'});
+						this.picker.find('.next').removeClass("out-of-range");
 					}
 					break;
 			}
