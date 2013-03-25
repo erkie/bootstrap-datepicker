@@ -46,6 +46,8 @@
 		if(this.component && this.component.length === 0)
 			this.component = false;
 
+		this.prepareDayTdCallback = options.prepareDayTd||function(td) {return td;};
+
 		this.forceParse = true;
 		if ('forceParse' in options) {
 			this.forceParse = options.forceParse;
@@ -437,11 +439,15 @@
 			var nextMonth = new Date(prevMonth);
 			nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
 			nextMonth = nextMonth.valueOf();
-			var html = [];
 			var clsName;
+			var tbody = this.picker.find('.datepicker-days tbody').empty();
+			var row;
 			while(prevMonth.valueOf() < nextMonth) {
+				if ( ! row ) {
+					row = $('<tr />');
+					tbody.append(row);
+				}
 				if (prevMonth.getUTCDay() == this.weekStart) {
-					html.push('<tr>');
 					if(this.calendarWeeks){
 						// ISO 8601: First week contains first thursday.
 						// ISO also states week starts on Monday, but we can be more abstract here.
@@ -454,7 +460,9 @@
 							yth = new Date(+(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
 							// Calendar week: ms between thursdays, div ms per day, div 7 days
 							calWeek =  (th - yth) / 864e5 / 7 + 1;
-						html.push('<td class="cw">'+ calWeek +'</td>');
+
+						var calWeekTd = $('<td class="cw">'+ calWeek +'</td>');
+						row.append(calWeekTd);
 
 					}
 				}
@@ -478,13 +486,14 @@
 					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1) {
 					clsName += ' disabled';
 				}
-				html.push('<td class="day'+clsName+'">'+prevMonth.getUTCDate() + '</td>');
+				var td = $('<td class="day'+clsName+'">'+prevMonth.getUTCDate() + '</td>');
+				td = this.prepareDayTdCallback(td, prevMonth);
+				row.append(td);
 				if (prevMonth.getUTCDay() == this.weekEnd) {
-					html.push('</tr>');
+					row = false;
 				}
 				prevMonth.setUTCDate(prevMonth.getUTCDate()+1);
 			}
-			this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
 			var currentYear = this.date && this.date.getUTCFullYear();
 
 			var months = this.picker.find('.datepicker-months')

@@ -399,6 +399,26 @@ The escape key can be used to hide and re-show the datepicker; this is necessary
 
 When the picker is visible, enter will simply hide it.  When the picker is not visible, enter will have normal effects -- submitting the current form, etc.
 
+## Callbacks
+
+Certain callbacks are provided to customize the datepicker during creation. Passed as options upon creation.
+
+### prepareDayTd
+
+Fired when the date picker is displayed. Passes the `td` about to be created, and the date it is for.
+
+```javascript
+$('#date')
+    .datepicker({
+        prepareDayTd: function(td, date) {
+            if (date.getDay() % 2 == 0)
+                td.addClass("odd");
+            return td;
+        }
+    }
+    });
+```
+
 ## I18N
 
 The plugin supports i18n for the month and weekday names and the `weekStart` option.  The default is English ('en'); other available translations are avilable in the `js/locales/` directory, simply include your desired locale after the plugin.  To add more languages, simply add a key to `$.fn.datepicker.dates`, before calling `.datepicker()`.  Example:
